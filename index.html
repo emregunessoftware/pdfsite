@@ -5,25 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Belge Sorgu</title>
     <style>
-        /* Sayfanın ve body'nin boşluklarını sıfırlayıp tam ekran yapıyoruz */
-        html, body { 
+        body, html { 
             margin: 0; 
             padding: 0; 
             height: 100%; 
             width: 100%; 
-            overflow: hidden;
-            background-color: #000; /* PDF yüklenirken arka plan siyah görünür */
+            overflow: hidden; 
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
         }
-        /* iframe'i tüm ekranı kaplayacak şekilde zorluyoruz */
         iframe { 
-            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%; 
-            height: 100vh; 
+            height: 100%; 
             border: none; 
+            z-index: 2;
+        }
+        .loading-msg {
+            z-index: 1;
+            text-align: center;
+            color: #555;
         }
     </style>
 </head>
 <body>
+
+    <div class="loading-msg">
+        <h2>Sistem Güncelleniyor</h2>
+        <p>Belge kısa süre içinde burada görüntülenecektir.</p>
+    </div>
+
     <iframe src="menu.pdf"></iframe>
+
 </body>
 </html>
