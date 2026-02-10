@@ -5,12 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Belge Sorgu</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-        iframe { width: 100%; height: 100vh; border: none; }
+        /* Sayfanın ve body'nin boşluklarını sıfırlayıp tam ekran yapıyoruz */
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden;
+            background-color: #000; /* PDF yüklenirken arka plan siyah görünür */
+        }
+        /* iframe'i tüm ekranı kaplayacak şekilde zorluyoruz */
+        iframe { 
+            display: block;
+            width: 100%; 
+            height: 100vh; 
+            border: none; 
+        }
     </style>
 </head>
 <body>
-    <iframe src="https://belgesorgu.netlify.app/menu.pdf"></iframe>
+    <iframe src="menu.pdf"></iframe>
 </body>
 </html>
-
