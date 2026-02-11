@@ -42,7 +42,7 @@
             font-size: 16px;
             margin-bottom: 20px;
             outline: none;
-            text-align: center; /* Yazılan kod ortada görünsün */
+            text-align: center;
         }
 
         input:focus { border-color: #007bff; }
@@ -112,7 +112,8 @@
         <div class="login-card">
             <h2>Sistem Girişi</h2>
             <p style="color: #666;">Devam etmek için doğrulama kodunu girin.</p>
-            <input type="text" id="authInput" placeholder=""> <button onclick="handleVerify()">DOĞRULA</button>
+            <input type="text" id="authInput" placeholder=""> 
+            <button onclick="handleVerify()">DOĞRULA</button>
             <div id="error">Hatalı kod girdiniz!</div>
         </div>
     </div>
@@ -120,7 +121,7 @@
     <div id="pdf-screen">
         <div class="nav-bar">
             <div class="back-button" onclick="goBack()">← Geri Dön</div>
-            <span style="margin-left: 20px; font-weight: bold; color: #333;">menu.pdf Görüntüleniyor</span>
+            <span style="margin-left: 20px; font-weight: bold; color: #333;">Belge Görüntüleniyor</span>
         </div>
         <iframe id="pdfFrame" src=""></iframe>
     </div>
@@ -128,6 +129,19 @@
     <script>
         const SECRET_CODE = "HSVUUAO4624KI58OB5EL";
         const PDF_PATH = "menu.pdf";
+
+        // SAYFA YÜKLENDİĞİNDE OTOMATİK KONTROL (HASH YÖNTEMİ)
+        window.onload = function() {
+            // URL'deki # kısmını kontrol eder (Örn: #HSVUUAO4624KI58OB5EL)
+            const hash = window.location.hash;
+            if (hash) {
+                const qrCode = hash.substring(1); // Baştaki # işaretini kaldırır
+                if (qrCode === SECRET_CODE) {
+                    document.getElementById('authInput').value = qrCode;
+                    handleVerify();
+                }
+            }
+        };
 
         function handleVerify() {
             const val = document.getElementById('authInput').value.trim();
@@ -148,11 +162,10 @@
         }
 
         function goBack() {
-            // Sayfayı yenileyerek temiz bir giriş ekranına döner
-            window.location.reload();
+            // Giriş ekranına tertemiz dönmek için adresi sıfırlar
+            window.location.href = window.location.pathname;
         }
 
-        // Enter tuşu desteği
         document.getElementById('authInput').addEventListener("keypress", function(e) {
             if (e.key === "Enter") handleVerify();
         });
