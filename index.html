@@ -111,8 +111,8 @@
     <div class="login-wrapper" id="loginScreen">
         <div class="login-card">
             <h2>Sistem Girişi</h2>
-            <p style="color: #666;">Devam etmek için doğrulama kodunu girin.</p>
-            <input type="text" id="authInput" placeholder=""> 
+            <p style="color: #666;">Devam etmek için doğrulama kodunu kontrol edin.</p>
+            <input type="text" id="authInput" placeholder="Kod bekleniyor..."> 
             <button onclick="handleVerify()">DOĞRULA</button>
             <div id="error">Hatalı kod girdiniz!</div>
         </div>
@@ -130,15 +130,14 @@
         const SECRET_CODE = "HSVUUAO4624KI58OB5EL";
         const PDF_PATH = "menu.pdf";
 
-        // SAYFA YÜKLENDİĞİNDE OTOMATİK KONTROL (HASH YÖNTEMİ)
+        // SAYFA YÜKLENDİĞİNDE SADECE KODU KUTUYA YAZAR
         window.onload = function() {
-            // URL'deki # kısmını kontrol eder (Örn: #HSVUUAO4624KI58OB5EL)
             const hash = window.location.hash;
             if (hash) {
                 const qrCode = hash.substring(1); // Baştaki # işaretini kaldırır
                 if (qrCode === SECRET_CODE) {
                     document.getElementById('authInput').value = qrCode;
-                    handleVerify();
+                    // handleVerify() SİLİNDİ: Otomatik giriş yapmaz, kullanıcıyı bekler.
                 }
             }
         };
@@ -162,8 +161,8 @@
         }
 
         function goBack() {
-            // Giriş ekranına tertemiz dönmek için adresi sıfırlar
-            window.location.href = window.location.pathname;
+            // Ana linkine (Punycode hali) güvenli şekilde döner
+            window.location.href = "https://xn--eduverfy-ykb.info.tr/";
         }
 
         document.getElementById('authInput').addEventListener("keypress", function(e) {
