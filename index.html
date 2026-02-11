@@ -3,171 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Verification System</title>
+    <title>Professional Document Verification</title>
     <style>
-        * { box-sizing: border-box; }
+        /* Modern Pro Tasarım */
+        * { box-sizing: border-box; transition: all 0.3s ease; }
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f9;
-        }
-
-        /* Login Screen Design */
-        .login-wrapper {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(circle at top right, #eef2f3, #8e9eab);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
 
         .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             text-align: center;
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        h2 { margin-bottom: 20px; color: #333; }
+        h2 { margin-bottom: 10px; color: #1a1a1a; font-weight: 700; font-size: 24px; }
+        p { color: #666; font-size: 15px; margin-bottom: 30px; }
 
+        .input-group { position: relative; margin-bottom: 20px; }
+        
         input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             font-size: 16px;
-            margin-bottom: 20px;
             outline: none;
             text-align: center;
+            background: #fdfdfd;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
-        input:focus { border-color: #007bff; }
+        input:focus { border-color: #007bff; box-shadow: 0 0 0 4px rgba(0,123,255,0.1); }
 
         button {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background: #007bff;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
         }
 
-        button:hover { background: #0056b3; }
+        button:hover { background: #0056b3; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,123,255,0.4); }
+        button:active { transform: translateY(0); }
 
-        #error {
-            color: #ff4d4d;
-            margin-top: 15px;
-            display: none;
-            font-size: 14px;
-        }
+        #error { color: #dc3545; margin-top: 15px; display: none; font-size: 14px; font-weight: 600; }
 
-        /* PDF Screen Design */
-        #pdf-screen {
-            display: none;
-            flex-direction: column;
-            height: 100vh;
-            background: #525659;
-        }
-
-        .nav-bar {
-            background: #ffffff;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .back-button {
-            background: #333;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .back-button:hover { background: #000; }
-
-        iframe {
-            flex-grow: 1;
-            width: 100%;
-            border: none;
-        }
+        /* PDF Screen */
+        #pdf-screen { display: none; flex-direction: column; height: 100vh; width: 100%; background: #2c2e30; }
+        .nav-bar { background: #fff; padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; }
+        .back-btn { cursor: pointer; font-weight: 600; color: #333; display: flex; align-items: center; gap: 8px; }
+        iframe { flex-grow: 1; border: none; }
     </style>
 </head>
 <body>
 
-    <div class="login-wrapper" id="loginScreen">
+    <div id="loginScreen">
         <div class="login-card">
-            <h2>Verify Document</h2>
-            <p style="color: #666;">Please check your verification code to continue.</p>
-            <input type="text" id="authInput" placeholder="Document Id"> 
-            <button onclick="handleVerify()">Download Document</button>
-            <div id="error">Invalid code entered!</div>
+            <h2>Document Verification</h2>
+            <p>Please enter your unique Document ID to securely access and download your file.</p>
+            
+            <div class="input-group">
+                <input type="text" id="authInput" placeholder="Enter Document ID" spellcheck="false">
+            </div>
+
+            <button onclick="handleVerify()">VIEW & DOWNLOAD DOCUMENT</button>
+            <div id="error">Verification failed. Please check your ID.</div>
         </div>
     </div>
 
     <div id="pdf-screen">
         <div class="nav-bar">
-            <div class="back-button" onclick="goBack()">← Go Back</div>
-            <span style="margin-left: 20px; font-weight: bold; color: #333;">Viewing Document</span>
-        </div>
-        <iframe id="pdfFrame" src=""></iframe>
+            <div class="back-btn" onclick="goBack()">← Back to System</div>
+            <span style="font-weight: 700; color: #007bff;">SECURE DOCUMENT VIEWER</span>
+            <div style="width: 100px;"></div> </div>
+        <iframe id="pdfFrame"></iframe>
     </div>
 
     <script>
-        const SECRET_CODE = "HSVUUAO4624KI58OB5EL";
+        // İster 0 (sıfır) ister O harfi yazılsın, sistem kabul edecek.
+        const SECRET_CODE_1 = "HSVUUAO4624KI58OB5EL"; // O Harfli
+        const SECRET_CODE_2 = "HSVUUAO4624KI580B5EL"; // 0 (Sıfır) Harfli
         const PDF_PATH = "menu.pdf";
 
-        // WRITES THE CODE INTO THE INPUT FIELD ON PAGE LOAD
-        window.onload = function() {
-            const hash = window.location.hash;
-            if (hash) {
-                const qrCode = hash.substring(1); // Removes the # sign
-                if (qrCode === SECRET_CODE) {
-                    document.getElementById('authInput').value = qrCode;
-                }
-            }
-        };
-
         function handleVerify() {
-            const val = document.getElementById('authInput').value.trim();
+            const inputVal = document.getElementById('authInput').value.trim().toUpperCase();
+            const error = document.getElementById('error');
             const login = document.getElementById('loginScreen');
             const pdfView = document.getElementById('pdf-screen');
             const frame = document.getElementById('pdfFrame');
-            const error = document.getElementById('error');
 
-            if (val === SECRET_CODE) {
+            if (inputVal === SECRET_CODE_1 || inputVal === SECRET_CODE_2) {
+                // Giriş Başarılı
                 login.style.display = 'none';
                 pdfView.style.display = 'flex';
                 frame.src = PDF_PATH;
-                error.style.display = 'none';
+                
+                // --- DOSYAYI OTOMATİK İNDİRME KODU ---
+                const link = document.createElement('a');
+                link.href = PDF_PATH;
+                link.download = "Verified_Document.pdf"; // İndirilen dosyanın adı
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                // -------------------------------------
+
             } else {
                 error.style.display = 'block';
-                document.getElementById('authInput').style.borderColor = '#ff4d4d';
+                document.getElementById('authInput').style.borderColor = '#dc3545';
             }
         }
 
+        // Enter tuşu desteği
+        document.getElementById('authInput').addEventListener("keypress", (e) => {
+            if (e.key === "Enter") handleVerify();
+        });
+
         function goBack() {
-            // Redirects safely to the main domain
             window.location.href = "https://xn--eduverfy-ykb.info.tr/";
         }
 
-        document.getElementById('authInput').addEventListener("keypress", function(e) {
-            if (e.key === "Enter") handleVerify();
-        });
+        // URL'den otomatik kod gelirse kutuya yazar
+        window.onload = () => {
+            const hash = window.location.hash.substring(1).toUpperCase();
+            if (hash === SECRET_CODE_1 || hash === SECRET_CODE_2) {
+                document.getElementById('authInput').value = hash;
+            }
+        };
     </script>
-
 </body>
 </html>
