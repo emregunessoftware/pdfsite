@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belge Doğrulama Sistemi</title>
+    <title>Document Verification System</title>
     <style>
         * { box-sizing: border-box; }
         body, html {
@@ -14,7 +14,7 @@
             background-color: #f4f4f9;
         }
 
-        /* Giriş Ekranı Tasarımı */
+        /* Login Screen Design */
         .login-wrapper {
             display: flex;
             justify-content: center;
@@ -69,7 +69,7 @@
             font-size: 14px;
         }
 
-        /* PDF Ekranı Tasarımı */
+        /* PDF Screen Design */
         #pdf-screen {
             display: none;
             flex-direction: column;
@@ -110,18 +110,18 @@
 
     <div class="login-wrapper" id="loginScreen">
         <div class="login-card">
-            <h2>Sistem Girişi</h2>
-            <p style="color: #666;">Devam etmek için doğrulama kodunu kontrol edin.</p>
-            <input type="text" id="authInput" placeholder="Kod bekleniyor..."> 
-            <button onclick="handleVerify()">DOĞRULA</button>
-            <div id="error">Hatalı kod girdiniz!</div>
+            <h2>System Login</h2>
+            <p style="color: #666;">Please check your verification code to continue.</p>
+            <input type="text" id="authInput" placeholder="Waiting for code..."> 
+            <button onclick="handleVerify()">VERIFY</button>
+            <div id="error">Invalid code entered!</div>
         </div>
     </div>
 
     <div id="pdf-screen">
         <div class="nav-bar">
-            <div class="back-button" onclick="goBack()">← Geri Dön</div>
-            <span style="margin-left: 20px; font-weight: bold; color: #333;">Belge Görüntüleniyor</span>
+            <div class="back-button" onclick="goBack()">← Go Back</div>
+            <span style="margin-left: 20px; font-weight: bold; color: #333;">Viewing Document</span>
         </div>
         <iframe id="pdfFrame" src=""></iframe>
     </div>
@@ -130,14 +130,13 @@
         const SECRET_CODE = "HSVUUAO4624KI58OB5EL";
         const PDF_PATH = "menu.pdf";
 
-        // SAYFA YÜKLENDİĞİNDE SADECE KODU KUTUYA YAZAR
+        // WRITES THE CODE INTO THE INPUT FIELD ON PAGE LOAD
         window.onload = function() {
             const hash = window.location.hash;
             if (hash) {
-                const qrCode = hash.substring(1); // Baştaki # işaretini kaldırır
+                const qrCode = hash.substring(1); // Removes the # sign
                 if (qrCode === SECRET_CODE) {
                     document.getElementById('authInput').value = qrCode;
-                    // handleVerify() SİLİNDİ: Otomatik giriş yapmaz, kullanıcıyı bekler.
                 }
             }
         };
@@ -161,7 +160,7 @@
         }
 
         function goBack() {
-            // Ana linkine (Punycode hali) güvenli şekilde döner
+            // Redirects safely to the main domain
             window.location.href = "https://xn--eduverfy-ykb.info.tr/";
         }
 
