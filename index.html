@@ -3,28 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belge Sorgu - Menü</title>
+    <title>Güvenli Belge Doğrulama</title>
     <style>
-        /* Ekranın tamamını kaplaması için gerekli ayarlar */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-            width: 100%; 
-            overflow: hidden; 
-            background-color: #333; /* PDF yüklenirken arka plan rengi */
+        /* CSS Kısmı - Görünümü Düzenler */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f2f5;
         }
-        /* PDF'in tam ekran görünmesini sağlayan kısım */
-        iframe { 
-            width: 100%; 
-            height: 100vh; 
-            border: none; 
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 { color: #1a1a1a; margin-bottom: 10px; }
+        p { color: #666; font-size: 14px; margin-bottom: 25px; }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus { border-color: #007bff; }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #0056b3; }
+
+        #error-msg {
+            color: #d93025;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Belge Görüntüleme Alanı */
+        #pdf-container {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: #525659;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+        }
+
+        .top-bar {
+            height: 50px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .back-btn {
+            background: #555;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <iframe src="menu.pdf"></iframe>
+    <div class="wrapper" id="login-screen">
+        <div class="login-card">
+            <h2>Belge Doğrulama</h2>
+            <p>Lütfen erişim kodunu giriniz</p>
+            <input type="text" id="access-code" placeholder="Kod: HSVUUAO4624KI58OB5EL">
+            <button onclick="verify()">Verify (Sorgula)</button>
+            <div id="error-msg">Hatalı kod! Lütfen tekrar deneyin.</div>
+        </div>
+    </div>
+
+    <div id="pdf-container">
+        <div class="top-bar">
+            <div class="back-btn" onclick="window.location.reload()">◀ Geri Dön</div>
+        </div>
+        <iframe src="" id="my-pdf"></iframe>
+    </div>
+
+    <script>
+        // JS Kısmı - Mantığı Çalıştırır
+        function verify() {
+            const userInput = document.getElementById('access-code').value.trim();
+            const validCode = "HSVUUAO4624KI58OB5EL";
+            const pdfFile = "menu.pdf"; // GitHub'daki dosya adın
+
+            if (userInput === validCode) {
+                // Girişi sakla, PDF'i yükle ve göster
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('pdf-container').style.display = 'block';
+                document.getElementById('my-pdf').src = pdfFile;
+            } else {
+                // Hata mesajını göster
+                const error = document.getElementById('error-msg');
+                error.style.display = 'block';
+                document.getElementById('access-code').style.borderColor = '#d93025';
+            }
+        }
+
+        // Enter tuşuna basınca da çalışsın
+        document.getElementById('access-code').addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                verify();
+            }
+        });
+    </script>
 
 </body>
 </html>
