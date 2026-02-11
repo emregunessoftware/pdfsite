@@ -100,55 +100,63 @@
     </div>
 
     <script>
-        // İster 0 (sıfır) ister O harfi yazılsın, sistem kabul edecek.
-        const SECRET_CODE_1 = "HSVUUAO4624KI58OB5EL"; // O Harfli
-        const SECRET_CODE_2 = "HSVUUAO4624KI580B5EL"; // 0 (Sıfır) Harfli
-        const PDF_PATH = "menu.pdf";
+    // --- BELGE VERİTABANI (Buraya istediğin kadar ekleme yapabilirsin) ---
+    const documentDatabase = {
+        "HSVUUAO4624KI58OB5EL": "menu.pdf",
+        "HSVUUAO4624KI580B5EL": "menu.pdf", // Sıfırlı versiyon aynı dosyaya gitsin
+        "BELGE2026TESTKODU": "belge2.pdf",   // Yeni bir belge eklediğinde böyle eklersin
+        "PROJE12345ABCDE": "proje_detay.pdf" // Örnek 3. belge
+    };
 
-        function handleVerify() {
-            const inputVal = document.getElementById('authInput').value.trim().toUpperCase();
-            const error = document.getElementById('error');
-            const login = document.getElementById('loginScreen');
-            const pdfView = document.getElementById('pdf-screen');
-            const frame = document.getElementById('pdfFrame');
+    function handleVerify(providedCode) {
+        const inputVal = (providedCode || document.getElementById('authInput').value).trim().toUpperCase();
+        
+        const error = document.getElementById('error');
+        const login = document.getElementById('loginScreen');
+        const pdfView = document.getElementById('pdf-screen');
+        const frame = document.getElementById('pdfFrame');
 
-            if (inputVal === SECRET_CODE_1 || inputVal === SECRET_CODE_2) {
-                // Giriş Başarılı
-                login.style.display = 'none';
-                pdfView.style.display = 'flex';
-                frame.src = PDF_PATH;
-                
-                // --- DOSYAYI OTOMATİK İNDİRME KODU ---
-                const link = document.createElement('a');
-                link.href = PDF_PATH;
-                link.download = "Verified_Document.pdf"; // İndirilen dosyanın adı
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                // -------------------------------------
+        // Kod veritabanımızda var mı kontrol et
+        if (documentDatabase.hasOwnProperty(inputVal)) {
+            const fileName = documentDatabase[inputVal]; // Koda karşılık gelen gerçek dosya adı
 
-            } else {
-                error.style.display = 'block';
-                document.getElementById('authInput').style.borderColor = '#dc3545';
-            }
+            // Giriş Başarılı
+            login.style.display = 'none';
+            pdfView.style.display = 'flex';
+            frame.src = fileName;
+            
+            // --- DOSYAYI KOD İSMİYLE İNDİRME ---
+            const link = document.createElement('a');
+            link.href = fileName;
+            link.download = inputVal + ".pdf"; // Dosya adı yine girilen KOD olacak
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            error.style.display = 'none';
+        } else {
+            // Hata Durumu
+            error.style.display = 'block';
+            document.getElementById('authInput').style.borderColor = '#dc3545';
         }
+    }
 
-        // Enter tuşu desteği
-        document.getElementById('authInput').addEventListener("keypress", (e) => {
-            if (e.key === "Enter") handleVerify();
-        });
+    // Enter tuşu desteği
+    document.getElementById('authInput').addEventListener("keypress", (e) => {
+        if (e.key === "Enter") handleVerify();
+    });
 
-        function goBack() {
-            window.location.href = "https://xn--eduverfy-ykb.info.tr/";
+    function goBack() {
+        window.location.href = "https://xn--eduverfy-ykb.info.tr/";
+    }
+
+    // URL'den otomatik kod gelirse (#kod) otomatik giriş yap
+    window.onload = () => {
+        const hash = window.location.hash.substring(1).toUpperCase();
+        if (hash && documentDatabase.hasOwnProperty(hash)) {
+            document.getElementById('authInput').value = hash;
+            handleVerify(hash);
         }
-
-        // URL'den otomatik kod gelirse kutuya yazar
-        window.onload = () => {
-            const hash = window.location.hash.substring(1).toUpperCase();
-            if (hash === SECRET_CODE_1 || hash === SECRET_CODE_2) {
-                document.getElementById('authInput').value = hash;
-            }
-        };
-    </script>
-</body>
+    };
+</script>
 </html>
