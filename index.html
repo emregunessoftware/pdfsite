@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Secure Document Verification</title>
+    <title>DAÜ - Secure Document Verification</title>
     <style>
         /* Modern Pro Tasarım */
         * { box-sizing: border-box; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
@@ -38,6 +38,13 @@
             border: 1px solid rgba(255,255,255,0.4);
         }
 
+        /* DAÜ Logo Stili */
+        .uni-logo {
+            width: 220px;
+            height: auto;
+            margin-bottom: 25px;
+        }
+
         h2 { margin-bottom: 12px; color: #1a1a1a; font-size: 22px; font-weight: 700; }
         p { color: #666; font-size: 14px; margin-bottom: 25px; }
 
@@ -53,12 +60,13 @@
             background: #fff;
         }
 
-        input:focus { border-color: #007bff; box-shadow: 0 0 0 4px rgba(0,123,255,0.1); }
+        /* DAÜ Lacivert Odak Rengi */
+        input:focus { border-color: #004a99; box-shadow: 0 0 0 4px rgba(0,74,153,0.1); }
 
         .btn-main {
             width: 100%;
             padding: 16px;
-            background: #007bff;
+            background: #004a99; /* DAÜ Mavisi */
             color: white;
             border: none;
             border-radius: 14px;
@@ -66,6 +74,8 @@
             font-weight: 700;
             cursor: pointer;
         }
+
+        .btn-main:hover { background: #003366; }
 
         #error { color: #dc3545; margin-top: 15px; display: none; font-size: 13px; font-weight: 600; }
 
@@ -91,6 +101,8 @@
             z-index: 100;
         }
 
+        .nav-logo { height: 35px; width: auto; }
+
         .btn-nav {
             padding: 8px 15px;
             border-radius: 8px;
@@ -114,24 +126,29 @@
 
         @media (max-width: 480px) {
             .nav-bar span { display: none; }
+            .uni-logo { width: 180px; }
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="loginScreen">
+<body oncontextmenu="return false;"> 
+    
+    <div id="loginScreen">
         <div class="login-card">
-            <h2>Verify Document</h2>
-            <p>Access your secure files by entering the Document ID below.</p>
-            <input type="text" id="authInput" placeholder="Enter Document ID" autocomplete="off" spellcheck="false">
-            <button class="btn-main" onclick="handleVerify()">VIEW DOCUMENT</button>
-            <div id="error">Verification failed. ID not found.</div>
+            <img src="https://www.emu.edu.tr/images/logo/logo-tr.png" alt="DAÜ Logo" class="uni-logo">
+            
+            <h2>Belge Doğrulama</h2>
+            <p>Güvenli dosyalarınıza erişmek için lütfen Belge Kimliğini (ID) giriniz.</p>
+            <input type="text" id="authInput" placeholder="Belge ID Giriniz" autocomplete="off" spellcheck="false">
+            <button class="btn-main" onclick="handleVerify()">BELGEYİ GÖRÜNTÜLE</button>
+            <div id="error">Doğrulama başarısız. Kimlik bulunamadı.</div>
         </div>
     </div>
 
     <div id="pdf-screen">
         <div class="nav-bar">
-            <button class="btn-nav btn-back" onclick="goBack()">← Exit</button>
-            <span style="font-weight: 700; color: #333;">SECURE VIEWER</span>
-            <button class="btn-nav btn-download" id="downloadBtn">Download PDF</button>
+            <button class="btn-nav btn-back" onclick="goBack()">← Çıkış</button>
+            <img src="https://www.emu.edu.tr/images/logo/logo-tr.png" alt="DAÜ Logo" class="nav-logo">
+            <button class="btn-nav btn-download" id="downloadBtn">İndir (PDF)</button>
         </div>
         <div class="iframe-container">
             <iframe id="pdfFrame"></iframe>
@@ -154,18 +171,13 @@
 
         if (documentDatabase.hasOwnProperty(inputVal)) {
             const fileName = documentDatabase[inputVal];
-
             login.style.display = 'none';
             pdfView.style.display = 'flex';
-            
-            // #toolbar=0&navpanes=0 tarayıcının kendi indir/yazdır butonlarını gizlemeye çalışır
             frame.src = fileName + "#toolbar=0&navpanes=0&scrollbar=0"; 
 
-            // İndirme butonuna tıklandığında indirme yapmaz, uyarı verir
             document.getElementById('downloadBtn').onclick = function() {
-                alert("Security Alert: Downloading this document is restricted for security reasons.");
+                alert("Güvenlik Uyarısı: Bu belgenin indirilmesi kısıtlanmıştır.");
             };
-
             error.style.display = 'none';
         } else {
             error.style.display = 'block';
