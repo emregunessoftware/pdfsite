@@ -101,8 +101,7 @@
         }
 
         .btn-back { background: #f0f0f0; color: #333; }
-        .btn-download { background: #28a745; color: white; }
-        .btn-download:hover { background: #218838; }
+        .btn-download { background: #6c757d; color: white; cursor: not-allowed; }
 
         .iframe-container {
             flex-grow: 1;
@@ -118,9 +117,7 @@
         }
     </style>
 </head>
-<body>
-
-    <div id="loginScreen">
+<body oncontextmenu="return false;"> <div id="loginScreen">
         <div class="login-card">
             <h2>Verify Document</h2>
             <p>Access your secure files by entering the Document ID below.</p>
@@ -142,11 +139,9 @@
     </div>
 
     <script>
-    // --- BELGE VERİTABANI ---
-    // GitHub'da dosya ismini HSVUUAO4624KI58OB5EL.pdf yaptığın için burayı güncelledim.
     const documentDatabase = {
         "HSVUUAO4624KI58OB5EL": "HSVUUAO4624KI58OB5EL.pdf",
-        "HSVUUAO4624KI580B5EL": "HSVUUAO4624KI58OB5EL.pdf", // Sıfır yazanları da yeni dosyaya yönlendirir
+        "HSVUUAO4624KI580B5EL": "HSVUUAO4624KI58OB5EL.pdf",
         "BELGE2026TESTKODU": "belge2.pdf"
     };
 
@@ -162,16 +157,13 @@
 
             login.style.display = 'none';
             pdfView.style.display = 'flex';
-            frame.src = fileName; // Artık GitHub'daki yeni ismi çağırıyor
+            
+            // #toolbar=0&navpanes=0 tarayıcının kendi indir/yazdır butonlarını gizlemeye çalışır
+            frame.src = fileName + "#toolbar=0&navpanes=0&scrollbar=0"; 
 
-            // İndirme butonu: Dosya zaten kod ismiyle kayıtlı olduğu için direkt indirir
+            // İndirme butonuna tıklandığında indirme yapmaz, uyarı verir
             document.getElementById('downloadBtn').onclick = function() {
-                const link = document.createElement('a');
-                link.href = fileName;
-                link.download = inputVal + ".pdf"; 
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                alert("Security Alert: Downloading this document is restricted for security reasons.");
             };
 
             error.style.display = 'none';
